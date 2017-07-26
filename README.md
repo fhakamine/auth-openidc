@@ -3,14 +3,19 @@
 
 This is a sample docker container used to test OpenID Connect and OAuth2.
 
-## How to run (example)
+## How to run on your local Docker (example)
 
 ```
+docker pull fhakamine/auth-openidc
 sudo docker run -d --name openidc -p 80:80 -p 443:443 \
 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/.well-known/openid-configuration' \
 -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' \
 -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
+
+## How to run on Docker Cloud (to be validated)
+
+[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https%3A%2F%2Fgithub.com%2Ffhakamine%2Fauth-openidc%2Ftree%2Fmaster)
 
 ## Parameters
 
