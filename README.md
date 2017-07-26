@@ -13,7 +13,9 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 \
 -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
 
-## How to run on Docker Cloud (to be validated)
+## How to run on Docker Cloud 
+
+**Important:** Requires you to configure Docker Cloud and link your PaaS account first: https://docs.docker.com/docker-cloud/getting-started/
 
 [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https%3A%2F%2Fgithub.com%2Ffhakamine%2Fauth-openidc%2Ftree%2Fmaster)
 
