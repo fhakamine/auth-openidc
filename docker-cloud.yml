@@ -1,0 +1,16 @@
+#This is a sample on how you can use docker-cloud. It's recommended that you set the client credentials apart (and not on this file)
+auth-openidc:
+  image: fhakamine/auth-openidc
+  autodestroy: always
+  ports:
+    - "80:80"
+    - "443:443"
+  environment:
+    OIDCPROVIDERMETADATAURL: https://ice.okta.com/oauth2/abcd1234/.well-known/oauth-authorization-server
+    OIDCCLIENTID: client_id
+    OIDCCLIENTSECRET: client_secret
+    REDIRECTDOMAIN: https://localhost
+    REV_PROXY: https://www.google.com
+    SCOPES: openid profile email promos:read
+  roles:
+    - global
