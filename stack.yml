@@ -1,0 +1,12 @@
+image: fhakamine/auth-openidc
+autodestroy: always
+environment:
+  -OIDCPROVIDERMETADATAURL
+  -OIDCCLIENTID
+  -OIDCCLIENTSECRET
+  -REDIRECTDOMAIN
+  -REV_PROXY
+  -SCOPES
+  expose:
+   - "80:80"
+   - "443:443"
