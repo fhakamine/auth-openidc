@@ -7,13 +7,13 @@ This is a sample docker container used to test OpenID Connect and OAuth2.
 
 ```
 docker pull fhakamine/auth-openidc
-sudo docker run -d --name openidc -p 80:80 -p 443:443 \
+sudo docker run -d --name sso -p 80:80 -p 443:443 \
 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/.well-known/openid-configuration' \
 -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' \
 -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
 
-## How to run on Docker Cloud 
+## How to run on Docker Cloud
 
 **Important:** Requires you to configure Docker Cloud and link your PaaS account first: https://docs.docker.com/docker-cloud/getting-started/
 
@@ -33,7 +33,7 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 \
 ## Specs
 
 - The container runs Apache 2 with PHP, SSL (self-signed certificates), and mod_auth_openidc.
-- Container runs as https://localhost. 
+- Container runs as https://localhost.
 - OAuth uses the authorization code flow.
 - The default redirect_uri is https://localhost/redirect_uri
 - The HTTP server provides 3 main paths: /test.php for tests, /reqbin/ to test requestb.in, and /rev/ to test as reverse proxy.
@@ -42,22 +42,42 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 \
 ## How to run with Okta SSO:
 
 ```
-sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/.well-known/openid-configuration' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
+sudo docker run -d --name sso -p 80:80 -p 443:443  \
+-e OIDCPROVIDERMETADATAURL='https://ice.okta.com/.well-known/openid-configuration'  \
+-e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' \
+-e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
 
 ## How to run with Okta API AM:
 
 ```
-sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/openid-configuration' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
+sudo docker run -d --name apiam -p 80:80 -p 443:443 \
+-e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/openid-configuration' \
+-e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' \
+-e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
 
 ## How to run with Okta API AM, custom scopes, and custom API request
 
 ```
-sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/oauth-authorization-server' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' -e SCOPES='openid profile email promos:read' -e APIAM='https://api.server/promos/' fhakamine/auth-openidc
+sudo docker run -d --name apiam -p 80:80 -p 443:443 \
+-e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/oauth-authorization-server' \
+-e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' \
+-e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' \
+-e SCOPES='openid profile email promos:read' -e APIAM='https://api.server/promos/' fhakamine/auth-openidc
 ```
 
 ## How to test
+
+### PHP
+
+1. Go to https://localhost/test.php
+2. Check your results
+
+### REVERSE PROXY
+
+1. Go to https://localhost/rev
+2. Check your results
 
 ### Requestbin
 
@@ -66,18 +86,12 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL
 3. Call https://localhost/reqbin/ID
 4. Return to requesb.in and check your results
 
-### PHP
-
-1. Go to https://localhost/test.php
-2. Check your results
-
 ## api (GET).
 
 1. Go to https://localhost/promos.php
 2. Check your results
 
 ## How to customize your own container
-
 ```
 docker build -t my-oidc .
 ```
