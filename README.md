@@ -27,6 +27,7 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 \
 - `OIDCScope`: Scopes/claims you want to request in the OAuth flow.
 - `OIDCCRYPTOPASSPHRASE` and `OIDCSCRUBREQUESTHEADERS` (optionals): Secret and flag for encrypting the state token and the request headers.
 - `REV_PROXY`:  The server you set will be reverse proxied under "/rev". For example, if you set REV_PROXY=https://my.intranet.com, https://localhost/rev/appX will go to https://my.intranet.com/appX
+- `APIURL`: If you decide to test an API authorization, you can add the API endpoint here.
 
 
 ## Specs
@@ -50,10 +51,10 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL
 sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/openid-configuration' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' fhakamine/auth-openidc
 ```
 
-## How to run with Okta API AM and custom scopes
+## How to run with Okta API AM, custom scopes, and custom API request
 
 ```
-sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/oauth-authorization-server' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' -e SCOPES='openid profile email promos:read' fhakamine/auth-openidc
+sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL='https://ice.okta.com/oauth2/abcd1234/.well-known/oauth-authorization-server' -e OIDCCLIENTID='client_id' -e OIDCCLIENTSECRET='client_secret' -e REDIRECTDOMAIN='https://localhost' -e REV_PROXY='https://www.google.com' -e SCOPES='openid profile email promos:read' -e APIAM='https://api.server/promos/' fhakamine/auth-openidc
 ```
 
 ## How to test
@@ -61,13 +62,18 @@ sudo docker run -d --name openidc -p 80:80 -p 443:443 -e OIDCPROVIDERMETADATAURL
 ### Requestbin
 
 1. Go to https://requestb.in/
-2. Get your id (https://requestb.in/<ID>)
-3. Call https://localhost/reqbin/<ID>
+2. Get your id (https://requestb.in/ID)
+3. Call https://localhost/reqbin/ID
 4. Return to requesb.in and check your results
 
 ### PHP
 
 1. Go to https://localhost/test.php
+2. Check your results
+
+## api (GET).
+
+1. Go to https://localhost/promos.php
 2. Check your results
 
 ## How to customize your own container
