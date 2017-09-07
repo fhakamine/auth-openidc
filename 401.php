@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to Ice</title>
+    <title>Unauthorized access</title>
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -13,7 +13,7 @@
   <body>
     <nav class="nav-extended">
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Ice</a>
+        <a href="#" class="brand-logo">Unauthorized access</a>
       </div>
       <div class="nav-content">
         <ul class="tabs tabs-transparent">
@@ -24,12 +24,8 @@
     </nav>
     <div class="container">
       <div id="home" class="col s12">
-        <h5>Home Page</h5>
-        <p>Welcome: <?php echo $_SERVER['OIDC_CLAIM_name']; ?></p>
-        <p>Email: <?php echo $_SERVER['OIDC_CLAIM_email']; ?></p>
+        <h5><?php echo $_SERVER['OIDC_CLAIM_name']; ?> is not unauthorized to access the <?php echo $_SERVER['REQUEST_URI']; ?> page.</h5>
         <div class="divider"></div>
-        <a href="redirect_uri?logout=<?php echo getenv('REDIRECTDOMAIN', true) ?: getenv('REDIRECTDOMAIN') ?>">Logout</a>
-        <a href="<?php echo $_SERVER['OIDC_CLAIM_iss']; ?>">Go to Issuer</a>
       </div>
       <div id="headers" class="col s12">
         <h5>Details</h5>

@@ -21,7 +21,7 @@ RUN rm -f mod_auth_openidc-1.8.6-1.el7.centos.x86_64.rpm
 RUN yum clean all
 
 #Configure the HTTP Server
-ENV OIDCCRYPTOPASSPHRASE='test' OIDCSCRUBREQUESTHEADERS='off' REDIRECTDOMAIN='https://localhost' SCOPES='openid email profile'
+ENV OIDCCRYPTOPASSPHRASE='test' OIDCSCRUBREQUESTHEADERS='off' REDIRECTDOMAIN='https://localhost' SCOPES='openid email profile' APIURL='https://api.api.com/api/endpoint'
 ADD httpd-foreground /usr/local/bin/
 RUN chmod +x /usr/local/bin/httpd-foreground
 RUN rm -rf /etc/httpd/logs
@@ -29,6 +29,9 @@ RUN mkdir /etc/httpd/logs
 RUN rm -Rf /etc/httpd/conf.d/ssl.conf
 ADD auth_openidc.conf /etc/httpd/conf.d/auth_openidc.conf
 ADD test.php /usr/share/httpd/test.php
+ADD promos.php /usr/share/httpd/promos.php
+ADD info.php /usr/share/httpd/info.php
+ADD 401.php /usr/share/httpd/401.php
 EXPOSE 443 80
 
 CMD ["httpd-foreground"]

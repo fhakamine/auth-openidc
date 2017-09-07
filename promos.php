@@ -13,34 +13,40 @@
   <body>
     <nav class="nav-extended">
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Ice</a>
-      </div>
-      <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-          <li class="tab"><a class="active" href="#home">Home</a></li>
-          <li class="tab"><a href="#headers">Headers</a></li>
-        </ul>
+        <a href="#" class="brand-logo">Ice Promos</a>
       </div>
     </nav>
     <div class="container">
-      <div id="home" class="col s12">
-        <h5>Home Page</h5>
-        <p>Welcome: <?php echo $_SERVER['OIDC_CLAIM_name']; ?></p>
-        <p>Email: <?php echo $_SERVER['OIDC_CLAIM_email']; ?></p>
-        <div class="divider"></div>
-        <a href="redirect_uri?logout=<?php echo getenv('REDIRECTDOMAIN', true) ?: getenv('REDIRECTDOMAIN') ?>">Logout</a>
-        <a href="<?php echo $_SERVER['OIDC_CLAIM_iss']; ?>">Go to Issuer</a>
-      </div>
-      <div id="headers" class="col s12">
-        <h5>Details</h5>
-        <ul class="collection with-header">
-          <li class="collection-header"><h4>Headers</h4></li>
-          <?php
-            foreach (getallheaders() as $name => $value) {
-              echo "<li class='collection-item'><strong>$name</strong>: $value</li>";
-            }
-          ?>
-        </ul>
+      <div class="col s12">
+        <h5>Ice Promos</h5>
+        <?php
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => getenv('APIURL', true) ?: getenv('APIURL'),
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "authorization: Bearer ".$_SERVER['OIDC_access_token'],
+    "cache-control: no-cache"
+  ),
+));
+$response = curl_exec($curl);
+$err = curl_error($curl);
+curl_close($curl);
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+  $rArray = json_decode($response, true);
+  foreach ($rArray as $key => $value) {
+    echo "CODE: " . $value["code"] . ": " . $value["description"] . "<br>";
+  }
+}
+        ?>
       </div>
 
       <div class="divider"></div>
